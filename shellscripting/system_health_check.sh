@@ -1,36 +1,33 @@
+#!/bin/bash
 
-DATE=$(date +%F)
 
-# Filenames
-PROCESS_LOG="process_log_$DATE.log"
+CURRENT_DATE=$(date +"%Y-%m-%d")
+
+
+PROCESS_LOG="process_log_$CURRENT_DATE.log"
+ps > "$PROCESS_LOG"
+
+
 HIGH_MEM_LOG="high_mem_processes.log"
 
-echo " Logging all running processes to $PROCESS_LOG..."
-ps aux > "$PROCESS_LOG"
+HIGH_MEM_PROCESSES=$(ps | awk '{if($4+0 > 30) print $0}')
 
-echo " Checking for processes using more than 30% memory..."
-HIGH_MEM=$(ps aux --sort=-%mem | awk '$4>30')
-
-if [[ -n "$HIGH_MEM" ]]; then
-    echo " Warning: High memory usage detected!"
-    echo "$HIGH_MEM" >> "$HIGH_MEM_LOG"
+if [[ -n "$HIGH_MEM_PROCESSES" ]]; then
+    echo "  Warning: High memory usage detected!" >&2
+    echo "[$(date)] High memory usage processes:" >> "$HIGH_MEM_LOG"
+    echo "$HIGH_MEM_PROCESSES" >> "$HIGH_MEM_LOG"
+    echo "" >> "$HIGH_MEM_LOG"
 fi
 
-echo " Checking disk usage on root (/) partition..."
-DISK_USAGE=$(df / | awk 'NR==2 {print $5}' | sed 's/%//')
-
-if [ "$DISK_USAGE" -gt 80 ]; then
-    echo " Warning: Disk usage on / is above 80%! Currently at ${DISK_USAGE}%"
+ROOT_USAGE=$(df / | awk 'NR==2 {gsub("%",""); print $5}')
+if [[ "$ROOT_USAGE" -gt 80 ]]; then
+    echo "  Warning: Disk usage on / is above 80%! Currently at ${ROOT_USAGE}%" >&2
 fi
 
-# Summary
-TOTAL_PROCESSES=$(ps aux | wc -l)
-HIGH_MEM_COUNT=$(echo "$HIGH_MEM" | wc -l)
-
-echo ""
-echo " System Health Summary:"
-echo "--------------------------"
-echo " Total running processes      : $TOTAL_PROCESSES"
-echo " Processes >30% memory usage  : $HIGH_MEM_COUNT"
-echo " Disk usage on / partition    : ${DISK_USAGE}%"
-echo "--------------------------"
+TOTAL_PROCESSES=$(ps | wc -l)
+HIGH_MEM_COUNT=$(echo "$HIGH_MEM_PROCESSES" | wc -l)
+echo "===== System Health Summary ====="
+echo "Total running processes:           $TOTAL_PROCESSES"
+echo " Processes >30% memory usage:       $HIGH_MEM_COUNT"
+echo " Disk usage on root partition (/): ${ROOT_USAGE}%"
+echo "=================================="

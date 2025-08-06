@@ -1,5 +1,7 @@
-      PID    PPID    PGID     WINPID   TTY         UID    STIME COMMAND
+[Wed Aug  6 12:40:30 IST 2025] High memory usage processes:
      1022       1    1022      14584  ?         197609 12:39:47 /usr/bin/mintty
+     1055    1054    1051       2896  pty0      197609 12:40:30 /usr/bin/ps
      1051    1023    1051       7880  pty0      197609 12:40:29 /usr/bin/bash
-     1053    1051    1051      16212  pty0      197609 12:40:30 /usr/bin/ps
+     1054    1051    1051      14448  pty0      197609 12:40:30 /usr/bin/bash
      1023    1022    1023      15632  pty0      197609 12:39:48 /usr/bin/bash
+
