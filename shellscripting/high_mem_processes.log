@@ -5,3 +5,11 @@
      1054    1051    1051      14448  pty0      197609 12:40:30 /usr/bin/bash
      1023    1022    1023      15632  pty0      197609 12:39:48 /usr/bin/bash
 
+[Wed Aug  6 13:07:26 IST 2025] High memory usage processes:
+      771       1     771      15588  ?         197609 13:06:34 /usr/bin/mintty
+      808     805     805      13764  pty0      197609 13:07:26 /usr/bin/bash
+      809     808     805       9052  pty0      197609 13:07:26 /usr/bin/ps
+      805     772     805      14508  pty0      197609 13:07:26 /usr/bin/bash
+      810     808     805      14332  pty0      197609 13:07:26 /usr/bin/bash
+      772     771     772      12564  pty0      197609 13:06:34 /usr/bin/bash
+
